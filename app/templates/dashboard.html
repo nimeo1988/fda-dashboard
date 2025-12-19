@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FDA Phishing Dashboard</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 8px; }
+    </style>
+</head>
+<body>
+
+<h2>FDA – Phishing Analysis Dashboard</h2>
+
+<form method='post' action='/scan'>
+    <input type='text' name='url' placeholder='https://example.com' size='50' required>
+    <button type='submit'>Scan</button>
+</form>
+
+<br>
+
+<table>
+<tr>
+    <th>URL</th>
+    <th>Verdict</th>
+    <th>JS</th>
+    <th>Phishing</th>
+    <th>Redirect</th>
+    <th>Screenshot</th>
+</tr>
+
+{% for s in scans %}
+<tr>
+    <td>{{ s.url }}</td>
+    <td>{{ s.verdict }}</td>
+    <td>{{ s.js_hits }}</td>
+    <td>{{ s.phishing_hits }}</td>
+    <td>{{ s.redirects }}</td>
+    <td>
+        {% if s.screenshot %}
+        <a href='/static/screenshots/{{ s.screenshot }}' target='_blank'>📸</a>
+        {% endif %}
+    </td>
+</tr>
+{% endfor %}
+</table>
+
+</body>
+</html>
