@@ -1,50 +1,29 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Phishing Dashboard</title>
-    <style>
-        body { font-family: Arial; background: #111; color: #eee; padding: 40px; }
-        input { width: 400px; padding: 8px; }
-        button { padding: 8px 16px; }
-        .box { margin-top: 20px; background: #222; padding: 20px; }
-    </style>
-</head>
-<body>
+SOCIAL ENGINEERING DASHBOARD
+Phishing Sites & Human Attack Surface - Live Updates
+📁 Carica CSV
+Nessun file caricato
 
-<h1>🛡️ Phishing Analysis Dashboard</h1>
+In attesa di dati...
+0
+SITI TOTALI
+0
+SETTORI COLPITI
+0
+TARGET UNICI
+--
+ULTIMO AGGIORNAMENTO
 
-<form method="post" action="/scan">
-    <input name="url" placeholder="https://example.com" required>
-    <button type="submit">Analizza</button>
-</form>
 
-{% if result %}
-<div class="box">
-    <h2>Risultato per: {{ url }}</h2>
-    <p><b>Verdetto:</b> {{ result.verdict }}</p>
+Recent Phishing Sites
 
-    <h3>Redirect</h3>
-    <ul>
-        {% for r in result.redirects %}
-        <li>{{ r }}</li>
-        {% endfor %}
-    </ul>
+SITE PHISHING
+DATE
+TARGET
+SECTOR ATTACKED
+PRETEXT
 
-    <h3>JS sospetto</h3>
-    <ul>
-        {% for j in result.js_hits %}
-        <li>{{ j }}</li>
-        {% endfor %}
-    </ul>
-
-    <h3>Keyword phishing</h3>
-    <ul>
-        {% for p in result.phishing_hits %}
-        <li>{{ p }}</li>
-        {% endfor %}
-    </ul>
-</div>
-{% endif %}
-
-</body>
-</html>
+Phishing Sites Over Time
+Target Distribution
+Sectors Attacked
+Pretexts Used
+This dashboard intentionally hides sensitive indicators to prevent exposure of active phishing infrastructure.
