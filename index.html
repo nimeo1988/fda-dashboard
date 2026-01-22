@@ -735,8 +735,23 @@ function updateMonthBySectorChart(data){
 // PDF GENERATION - REPORT PROFESSIONALE STILE CERT-AGID
 document.getElementById('generatePdfBtn').addEventListener('click', async function() {
     const btn = this;
+    
+    // Verifica che ci siano dati caricati
+    if(!currentData || currentData.length === 0) {
+        alert('⚠️ Carica prima un file CSV per generare il report!');
+        return;
+    }
+    
+    if(!filteredData || filteredData.length === 0) {
+        alert('⚠️ Nessun dato da mostrare con i filtri attuali. Prova a modificare i filtri.');
+        return;
+    }
+    
     btn.disabled = true;
     btn.textContent = '⏳ Generazione Report...';
+    
+    // Aspetta che i grafici siano renderizzati
+    await new Promise(resolve => setTimeout(resolve, 500));
     
     try {
         const { jsPDF } = window.jspdf;
