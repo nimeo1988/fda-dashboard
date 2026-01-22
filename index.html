@@ -820,12 +820,14 @@ document.getElementById('generatePdfBtn').addEventListener('click', async functi
         function captureChartWhite(canvasId) {
             const canvas = document.getElementById(canvasId);
             const tempCanvas = document.createElement('canvas');
-            tempCanvas.width = canvas.width;
-            tempCanvas.height = canvas.height;
+            // Aumenta risoluzione per qualità migliore (2x)
+            tempCanvas.width = canvas.width * 2;
+            tempCanvas.height = canvas.height * 2;
             const ctx = tempCanvas.getContext('2d');
+            ctx.scale(2, 2);
             ctx.fillStyle = '#FFFFFF';
-            ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-            ctx.drawImage(canvas, 0, 0);
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height);
             return tempCanvas.toDataURL('image/png', 1.0);
         }
         
@@ -956,8 +958,8 @@ document.getElementById('generatePdfBtn').addEventListener('click', async functi
         
         // Crea grafico a barre verticali per Top 5 settori
         const tempCanvas = document.createElement('canvas');
-        tempCanvas.width = 900;
-        tempCanvas.height = 550;
+        tempCanvas.width = 1800; // Raddoppiato per alta risoluzione
+        tempCanvas.height = 1100; // Raddoppiato per alta risoluzione
         tempCanvas.style.display = 'none';
         document.body.appendChild(tempCanvas);
         
@@ -978,6 +980,7 @@ document.getElementById('generatePdfBtn').addEventListener('click', async functi
             options: {
                 responsive: false,
                 animation: false,
+                devicePixelRatio: 2, // Migliora la nitidezza
                 plugins: {
                     legend: {display: false},
                     tooltip: {enabled: false}
@@ -985,19 +988,19 @@ document.getElementById('generatePdfBtn').addEventListener('click', async functi
                 scales: {
                     y: {
                         beginAtZero: true,
-                        ticks: {color: '#333', font: {size: 18, weight: 'bold'}},
-                        grid: {color: 'rgba(0,0,0,0.1)', lineWidth: 1},
+                        ticks: {color: '#333', font: {size: 36, weight: 'bold'}}, // Font più grandi
+                        grid: {color: 'rgba(0,0,0,0.1)', lineWidth: 2},
                         title: {
                             display: true,
                             text: 'Numero campagne',
                             color: '#333',
-                            font: {size: 16, weight: 'bold'}
+                            font: {size: 32, weight: 'bold'}
                         }
                     },
                     x: {
                         ticks: {
                             color: '#333', 
-                            font: {size: 13, weight: 'bold'},
+                            font: {size: 26, weight: 'bold'}, // Font più grandi
                             maxRotation: 45,
                             minRotation: 45
                         },
@@ -1007,7 +1010,7 @@ document.getElementById('generatePdfBtn').addEventListener('click', async functi
             }
         });
         
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise(resolve => setTimeout(resolve, 200)); // Più tempo per renderizzare
         
         const columnCanvas = document.createElement('canvas');
         columnCanvas.width = tempCanvas.width;
@@ -1146,12 +1149,20 @@ document.getElementById('generatePdfBtn').addEventListener('click', async functi
         pdf.text('Pagina 3 di 3', pageWidth/2, pageHeight - 10, { align: 'center' });
         
         // Salva
-        const filename = `Threat-Intelligence-Report-${new Date().toISOString().slice(0,10)}.pdf`;
+        const filename = `Analisi-Campagne-Phishing-${new Date().toISOString().slice(0,10)}.pdf`;
         pdf.save(filename);
         
         btn.disabled = false;
         btn.textContent = '📄 Generate PDF Report';
         btn.style.background = '#27ae60';
+        
+        // Suggerimento per iPhone/iPad
+        const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+        if(isIOS) {
+            setTimeout(() => {
+                alert('✅ PDF generato!\n\n💡 Su iPhone/iPad:\n• Apri il PDF in Files o iBooks\n• Usa "pinch to zoom" per ingrandire\n• Ruota in orizzontale per vedere meglio');
+            }, 500);
+        }
         
     } catch(error) {
         console.error('PDF error:', error);
@@ -1164,4 +1175,4 @@ document.getElementById('generatePdfBtn').addEventListener('click', async functi
 </script>
 
 </body>
-</html> 
+</html>
